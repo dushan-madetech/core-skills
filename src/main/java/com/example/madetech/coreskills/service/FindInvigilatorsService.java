@@ -6,6 +6,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class FindInvigilatorsService {
     public InvigilatorDomain[] getByCoreskill(String coreSkill) {
-        return new InvigilatorDomain[]{ InvigilatorDomain.builder().Name("Joe").build() };
+        return new InvigilatorDomain[]{ InvigilatorDomain.builder().name("Joe").build() };
     }
 }

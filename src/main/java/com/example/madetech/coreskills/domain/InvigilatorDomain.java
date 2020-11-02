@@ -3,9 +3,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
 public class InvigilatorDomain {
-    private String Name;
+    private String name;
+    private List<String> coreSkills;
 }
