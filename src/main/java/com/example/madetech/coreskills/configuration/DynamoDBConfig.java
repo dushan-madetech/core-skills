@@ -1,5 +1,5 @@
 package com.example.madetech.coreskills.configuration;
-import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
@@ -11,8 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
 @Configuration
-@EnableDynamoDBRepositories
-        (basePackages = "com.example.madetech.coreskills.repositories")
+@EnableDynamoDBRepositories(basePackages = "repositories")
 public class DynamoDBConfig {
     @Value("${amazon.dynamodb.endpoint}")
     private String amazonDynamoDBEndpoint;
@@ -28,18 +27,11 @@ public class DynamoDBConfig {
 
     @Bean
     public AmazonDynamoDB amazonDynamoDB() {
-        AmazonDynamoDB amazonDynamoDB;
-
-        if (!StringUtils.isEmpty(amazonDynamoDBEndpoint) && !StringUtils.isEmpty(awsRegion)) {
-            amazonDynamoDB = AmazonDynamoDBClientBuilder.standard().withEndpointConfiguration(
-                    new AwsClientBuilder.EndpointConfiguration(amazonDynamoDBEndpoint, awsRegion))
-                    .build();
-        } else {
-            amazonDynamoDB = AmazonDynamoDBClientBuilder.standard().withEndpointConfiguration(
-                    new AwsClientBuilder.EndpointConfiguration("http://localhost:8000", "eu-west-2"))
-                    .build();
-        }
-
-        return amazonDynamoDB;
+        if (StringUtils.isEmpty(amazonDynamoDBEndpoint)) amazonDynamoDBEndpoint = "http://localhost:8000";
+        if (StringUtils.isEmpty(awsRegion)) awsRegion = "eu-west-2";
+        return AmazonDynamoDBClientBuilder.standard().withCredentials(
+                new AWSStaticCredentialsProvider(new BasicAWSCredentials(amazonAWSAccessKey, amazonAWSSecretKey))).withEndpointConfiguration(
+                new AwsClientBuilder.EndpointConfiguration(amazonDynamoDBEndpoint, awsRegion))
+                .build();
     }
 }
