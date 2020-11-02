@@ -17,10 +17,10 @@ public class CanFindPotentialInvigilatorsTest {
     @Autowired
     TestRestTemplate testRestTemplate;
 
-    private DynamoDBMapper dynamoDBMapper;
-
-    @Autowired
-    AmazonDynamoDB amazonDynamoDB;
+//    private DynamoDBMapper dynamoDBMapper;
+//
+//    @Autowired
+//    AmazonDynamoDB amazonDynamoDB;
 
     private ResponseEntity<InvigilatorsResponse> invigilatorsResponse;
     private final String coreSkill = "giraffe";
@@ -34,7 +34,7 @@ public class CanFindPotentialInvigilatorsTest {
 
     private void givenThereArePeopleWithAGiraffeBadge() {
         //TODO: Setup database with invigilators
-        dynamoDBMapper = new DynamoDBMapper(amazonDynamoDB);
+//        dynamoDBMapper = new DynamoDBMapper(amazonDynamoDB);
 //        dynamoDBMapper.generateCreateTableRequest()
 
     }
