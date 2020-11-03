@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.ArrayList;
 
 @RestController
 public class PotentialInvigilatorsController {
@@ -17,9 +18,19 @@ public class PotentialInvigilatorsController {
     @GetMapping("/invigilators/{coreSkill}")
     public ResponseEntity<InvigilatorsResponse> getInvigilatorsForCoreSkill(@PathVariable String coreSkill){
         InvigilatorDomain[] response = findInvigilatorsService.getByCoreskill(coreSkill);
-        var invigilatorsResponse = new InvigilatorsResponse();
 
-        invigilatorsResponse.setNames(new String[]{response[0].getName()});
-        return new ResponseEntity<>(invigilatorsResponse, HttpStatus.OK);
+        return new ResponseEntity<>(mapDomainToResponse(response), HttpStatus.OK);
+    }
+
+    private InvigilatorsResponse mapDomainToResponse(InvigilatorDomain[] domainObjects) {
+        ArrayList<String> names = new ArrayList<>();
+        InvigilatorsResponse invigilatorsResponse = new InvigilatorsResponse();
+        for (InvigilatorDomain invigilatorDomain : domainObjects)
+        {
+            names.add(invigilatorDomain.getName());
+        }
+
+        invigilatorsResponse.setNames(names.toArray(String[]::new));
+        return invigilatorsResponse;
     }
 }
